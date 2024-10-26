@@ -1,22 +1,33 @@
-
-
-import { useJsApiLoader } from "@react-google-maps/api";
+import styled from "styled-components";
 import Map from "../pages/Map";
 import Form from "./Form";
+import { useState } from "react";
 
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+`;
+
+const FlexItem = styled.div`
+  flex: ${(props) => props.flex};
+`;
 
 function AppLayout() {
-  const apiKey = "AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM";
+  const [isVisible, setIsVisible] = useState(true);
 
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: apiKey,
-  });
+  function onOpen() {
+    setIsVisible(true);
+  }
   return (
-    <>
-      <Form />
-      <Map isLoaded={isLoaded} />
-    </>
+    <Container>
+      <FlexItem flex="0.3">
+        <Form isVisible={isVisible} onToggle={setIsVisible} />
+      </FlexItem>
+      <FlexItem flex="0.7">
+        <Map onOpen={onOpen} />
+      </FlexItem>
+    </Container>
   );
 }
 
