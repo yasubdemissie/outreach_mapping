@@ -15,10 +15,10 @@ function AppLayout() {
     googleMapsApiKey: apiKey,
   });
   return (
-    <div>
+    <>
       <Form />
       <Map isLoaded={isLoaded} />
-    </div>
+    </>
   );
 }
 
