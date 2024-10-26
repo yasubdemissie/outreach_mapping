@@ -1,4 +1,4 @@
-import { GoogleMap, LoadScript, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import Perfect from "../Perfect/Perfect";
 import { useEffect, useState } from "react";
 
