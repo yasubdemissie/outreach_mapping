@@ -53,7 +53,7 @@ const [selectedpossetion, selectedMarkerPosetion] =useState()
   const handleInfoWindowCloseClick = () => {
     setInfoWindowVisible(false);
   };
-console.log(markers)
+console.log(selectedMarker)
   return isLoaded ? (
     <div>
 
@@ -79,10 +79,9 @@ console.log(markers)
         <MarkerF
           key={index}
           position={marker}
-          onClick={() => {handleMarkerClick(selectedMarker),handleMarkerClicks(marker)}}
-        >
-          misu
-        </MarkerF>
+          onClick={() => {handleMarkerClick(marker),handleMarkerClicks(marker)}}
+        />
+        
       ))}
 
       {/* Display InfoWindow if a marker is selected */}
@@ -99,16 +98,7 @@ console.log(markers)
           </div>
         </InfoWindow>
       )}
-      {infoWindowVisible && (
-        <InfoWindow position={selectedpossetion} onCloseClick={handleInfoWindowCloseClick}>
-          <div style={{ maxWidth: '200px' }}>
-            {selectedpossetion.lat }{ selectedpossetion.lng}
-            <h2>Location Name</h2>
-            
-            <p>This is a description of the location. Add any text or information you want here. </p>
-          </div>
-        </InfoWindow>
-      )}
+    
     </GoogleMap>
     </div>
   ) : (
