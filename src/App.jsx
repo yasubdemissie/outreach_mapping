@@ -4,6 +4,7 @@ import About from "./pages/About";
 import Login from "./pages/Login";
 import Contact from "./pages/Contact";
 import AppLayout from "./components/AppLayout";
+import './App.css'; // Ensure to create this CSS file for styling
 
 function App() {
   return (
