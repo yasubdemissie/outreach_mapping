@@ -1,21 +1,14 @@
-import propType from "prop-types";
-
-// import { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
-import { useClickOutside } from "../hooks/useClickOutside";
 
 const StyledForm = styled.form`
-  height: 100vh;
-  width: 30vw;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width: 100%;
+  height: 100%;
   padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   position: relative;
   transition: transform 0.5s ease-in-out;
   ${({ isVisible }) =>
@@ -27,7 +20,7 @@ const StyledForm = styled.form`
 
 const FormGroup = styled.div`
   margin-bottom: 15px;
-  /* width: 100%; */
+  width: 100%;
 `;
 
 const Label = styled.label`
@@ -42,6 +35,7 @@ const Input = styled.input`
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  margin-bottom: 10px;
 `;
 
 const Textarea = styled.textarea`
@@ -50,6 +44,7 @@ const Textarea = styled.textarea`
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  margin-bottom: 10px;
 `;
 
 const ErrorMessage = styled.span`
@@ -81,10 +76,7 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-function Form({ isVisible, onToggle }) {
-  // const [isVisible, setIsVisible] = useState(true);
-  // const ref = useClickOutside(() => onToggle(true));
-
+function Form({ isVisible, onClose }) {
   const {
     register,
     handleSubmit,
@@ -103,18 +95,9 @@ function Form({ isVisible, onToggle }) {
     console.log(newData);
   };
 
-  const handleClose = () => {
-    onToggle(false);
-  };
-
   return (
-    <StyledForm
-      className="w-dvw grid col-span-2"
-      // ref={ref}
-      onSubmit={handleSubmit(onSubmit)}
-      isVisible={isVisible}
-    >
-      <CloseButton onClick={handleClose}>&times;</CloseButton>
+    <StyledForm onSubmit={handleSubmit(onSubmit)} isVisible={isVisible}>
+      <CloseButton onClick={onClose}>&times;</CloseButton>
       <FormGroup>
         <Label htmlFor="firstName">First Name</Label>
         <Input
@@ -179,10 +162,5 @@ function Form({ isVisible, onToggle }) {
     </StyledForm>
   );
 }
-
-Form.propTypes = {
-  isVisible: propType.bool,
-  onToggle: propType.func,
-};
 
 export default Form;

@@ -1,18 +1,12 @@
-import React, { useState } from "react";
-import { MapContainer, TileLayer, Marker, useMapEvents, Popup } from "react-leaflet";
+import { useState } from "react";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import styled from "styled-components";
 
-const PageContainer = styled.div`
-  display: grid;
-  width: 100vw;
-  height: 100vh;
-`;
-
 const MapContainerStyled = styled.div`
-  grid-column: span 3;
   width: 100%;
   height: 100%;
+  padding: 10px;
   position: relative;
 `;
 
@@ -37,27 +31,23 @@ function Map({ onOpen }) {
   };
 
   return (
-    <PageContainer>
-      <MapContainerStyled>
-        <MapContainer
-          center={[center.lat, center.lng]}
-          zoom={13}
-          scrollWheelZoom={true}
-          style={{ width: "100%", height: "100%" }}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-          {markers.map((marker, index) => (
-            <Marker key={index} position={[marker.lat, marker.lng]} >
-              <Popup>duthcj</Popup>
-            </Marker>
-          ))}
-          <MapClickHandler />
-        </MapContainer>
-      </MapContainerStyled>
-    </PageContainer>
+    <MapContainerStyled>
+      <MapContainer
+        center={[center.lat, center.lng]}
+        zoom={13}
+        scrollWheelZoom={true}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        {markers.map((marker, index) => (
+          <Marker key={index} position={[marker.lat, marker.lng]} />
+        ))}
+        <MapClickHandler />
+      </MapContainer>
+    </MapContainerStyled>
   );
 }
 

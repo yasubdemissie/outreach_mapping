@@ -1,12 +1,19 @@
-// import styled from "styled-components";
+import styled from "styled-components";
 import Map from "../pages/Map";
 import Form from "./Form";
-// import { useJsApiLoader } from "@react-google-maps/api";
 import { useState } from "react";
 
-function AppLayout() {
-  // const apiKey = "AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM";
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+`;
 
+const FlexItem = styled.div`
+  flex: ${(props) => props.flex};
+`;
+
+function AppLayout() {
   const [isVisible, setIsVisible] = useState(true);
 
   function onOpen() {
@@ -14,10 +21,14 @@ function AppLayout() {
   }
 
   return (
-    <div className="w-dvw grid grid-rows-1 grid-cols-5">
-      <Form isVisible={isVisible} onToggle={setIsVisible} />
-      {<Map />}
-    </div>
+    <Container>
+      <FlexItem flex="0.3">
+        <Form isVisible={isVisible} onToggle={setIsVisible} />
+      </FlexItem>
+      <FlexItem flex="0.7">
+        <Map onOpen={onOpen} />
+      </FlexItem>
+    </Container>
   );
 }
 
