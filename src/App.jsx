@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Contact from "./pages/Contact";
 import AppLayout from "./components/AppLayout";
 import './App.css'; // Ensure to create this CSS file for styling
+import Register from "./pages/Register";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
         <Route path="/" element={<AppLayout />} />
       </Routes>
     </BrowserRouter>

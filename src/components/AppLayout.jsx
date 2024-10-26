@@ -1,19 +1,17 @@
-
 import MapComponent from "./MapComponent";
-import FormComponent from "./FormComponent";
-
-
+// import FormComponent from "./FormComponent";
+import Form from "./Form";
+import { useState } from "react";
 
 function AppLayout() {
-  
-  return (
-    <div className="flex-container">
-      <div className="w-[600px]">
 
-      <FormComponent />
-      </div>
-      <MapComponent />
-      </div>
+  const [selectedPosition, setSelectedPosition ] = useState(null);
+
+  return (
+    <div className="flex-container max-h-dvh">
+      <Form position={selectedPosition} />
+      <MapComponent setPosition={setSelectedPosition} />
+    </div>
   );
 }
 

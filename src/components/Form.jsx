@@ -1,11 +1,14 @@
-import React from "react";
+import propType from "prop-types";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import styled, { css } from "styled-components";
+import formApi from "../Api/formApi";
 
 const StyledForm = styled.form`
-  width: 100%;
-  height: 100%;
-  padding: 20px;
+  width: 40vw;
+  height: 100vh;
+  overflow-y: scroll;
+  padding: 10px;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -14,13 +17,13 @@ const StyledForm = styled.form`
   ${({ isVisible }) =>
     !isVisible &&
     css`
-      transform: translateX(-100%);
+      transform: translateX(0%);
     `}
 `;
 
 const FormGroup = styled.div`
   margin-bottom: 15px;
-  // width: 100%;
+  width: 100%;
 `;
 
 const Label = styled.label`
@@ -30,7 +33,7 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  // width: 100%;
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -39,7 +42,7 @@ const Input = styled.input`
 `;
 
 const Textarea = styled.textarea`
-  // width: 100%;
+  width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -76,7 +79,7 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-function Form({ isVisible, onClose }) {
+function Form({ isVisible, onClose, position }) {
   const {
     register,
     handleSubmit,
@@ -84,32 +87,34 @@ function Form({ isVisible, onClose }) {
   } = useForm();
 
   const onSubmit = (data) => {
+    if (position === null) {
+      toast.error("Please Select a position");
+      return;
+    }
     const newData = {
       ...data,
-      name: data.name,
-      description: data.description,
-      time: data.time,
       distance: +data.distance,
-      file: null,
+      file: [...data.file],
+      location: position,
     };
-    console.log(newData);
+
+    formApi.createNewForm(newData);
+
   };
 
   return (
     <StyledForm onSubmit={handleSubmit(onSubmit)} isVisible={isVisible}>
       <CloseButton onClick={onClose}>&times;</CloseButton>
       <FormGroup>
-        <Label htmlFor="firstName">First Name</Label>
+        <Label htmlFor="name">Full Name</Label>
         <Input
-          id="firstName"
-          placeholder="Enter your first name"
-          {...register("firstName", { required: true })}
+          id="name"
+          placeholder="Enter your full name"
+          {...register("name", { required: true })}
         />
-        {errors.firstName && (
-          <ErrorMessage>This field is required</ErrorMessage>
-        )}
+        {errors.name && <ErrorMessage>This field is required</ErrorMessage>}
       </FormGroup>
-      <FormGroup>
+      {/* <FormGroup>
         <Label htmlFor="lastName">Last Name</Label>
         <Input
           id="lastName"
@@ -117,15 +122,49 @@ function Form({ isVisible, onClose }) {
           {...register("lastName", { required: true })}
         />
         {errors.lastName && <ErrorMessage>This field is required</ErrorMessage>}
-      </FormGroup>
+      </FormGroup> */}
       <FormGroup>
-        <Label htmlFor="time">Time</Label>
+        <Label htmlFor="time">Date </Label>
         <Input
-          type="time"
+          type="date"
           id="time"
           {...register("time", { required: true })}
         />
         {errors.time && <ErrorMessage>This field is required</ErrorMessage>}
+      </FormGroup>
+      <FormGroup>
+        <Label htmlFor="EnvangMethod">Methodolgy</Label>
+        <Input
+          type="text"
+          id="EnvangMethod"
+          placeholder="Envangelism Methodolgy"
+          {...register("EnvangMethod", { required: true })}
+        />
+        {errors.EnvangMethod && (
+          <ErrorMessage>This field is required</ErrorMessage>
+        )}
+      </FormGroup>
+      <FormGroup>
+        <Label htmlFor="time">Total People</Label>
+        <Input
+          type="number"
+          id="total"
+          {...register("total", { required: true })}
+        />
+        {errors.total && (
+          <ErrorMessage>This field is required</ErrorMessage>
+        )}
+      </FormGroup>
+      <FormGroup>
+        <Label htmlFor="time">Saved People</Label>
+        <Input
+          type="number"
+          id="savedPeople"
+          {...register("savedPeople", { required: true })}
+        />
+        {errors.savedPeople && (
+          <ErrorMessage>This field is required</ErrorMessage>
+        )}
       </FormGroup>
       <FormGroup>
         <Label htmlFor="file">Image & Video</Label>
@@ -148,7 +187,7 @@ function Form({ isVisible, onClose }) {
           <ErrorMessage>This field is required</ErrorMessage>
         )}
       </FormGroup>
-      <FormGroup>
+      {/* <FormGroup>
         <Label htmlFor="distance">Distance</Label>
         <Input
           type="text"
@@ -157,10 +196,16 @@ function Form({ isVisible, onClose }) {
           {...register("distance", { required: true })}
         />
         {errors.distance && <ErrorMessage>This field is required</ErrorMessage>}
-      </FormGroup>
+      </FormGroup> */}
       <SubmitButton type="submit">Submit</SubmitButton>
     </StyledForm>
   );
 }
+
+Form.propTypes = {
+  isVisible: propType.bool,
+  onClose: propType.func,
+  position: propType.object,
+};
 
 export default Form;
