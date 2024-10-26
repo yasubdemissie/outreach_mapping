@@ -6,6 +6,7 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { getCurrentLocation } from "../Perfect/apiGeocoding";
+import { useGetData } from "../hooks/useGetData";
 
 const containerStyle = {
   width: "70vw",
@@ -14,14 +15,13 @@ const containerStyle = {
 
 const pos = getCurrentLocation();
 
-console.log(pos);
-
-const center = pos !== undefined
-  ? { lat: pos.latitude, lng: pos.longitude }
-  : {
-      lat: -3.745,
-      lng: -38.523,
-    };
+const center =
+  pos !== undefined
+    ? { lat: pos.latitude, lng: pos.longitude }
+    : {
+        lat: -3.745,
+        lng: -38.523,
+      };
 
 function MapComponent({ setPosition }) {
   const { isLoaded } = useJsApiLoader({
@@ -37,6 +37,10 @@ function MapComponent({ setPosition }) {
   }, []);
 
   const onUnmount = useCallback(() => {}, []);
+
+  const { data, isLoading } = useGetData();
+
+  // console.log(data, isLoading);
 
   const handleMapClick = (event) => {
     const newMarker = {
@@ -63,7 +67,7 @@ function MapComponent({ setPosition }) {
       id="google-map"
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={17}
+      zoom={16}
       onLoad={onLoad}
       onUnmount={onUnmount}
       onClick={handleMapClick} // Capture clicks on the map
