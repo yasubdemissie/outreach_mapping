@@ -79,7 +79,7 @@ console.log(selectedMarker)
         <MarkerF
           key={index}
           position={marker}
-          onClick={() => {handleMarkerClick(marker),handleMarkerClicks(marker)}}
+          onClick={() => {handleMarkerClick(marker)}}
         />
         
       ))}
