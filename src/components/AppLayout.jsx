@@ -1,37 +1,34 @@
-
-
-import { useJsApiLoader } from "@react-google-maps/api";
+import styled from "styled-components";
 import Map from "../pages/Map";
-import { Form } from "react-hook-form";
+import Form from "./Form";
+import { useState } from "react";
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row; // Ensure items are arranged in a row
+`;
+
+const FlexItem = styled.div`
+  flex: ${(props) => props.flex};
+`;
 
 function AppLayout() {
-  const apiKey = "AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM";
+  const [isVisible, setIsVisible] = useState(true);
 
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: apiKey,
-  });
+  function onOpen() {
+    setIsVisible(true);
+  }
   return (
-    <div className="w-screen h-screen">
-     
-<div>
-<Form/>
-</div>
-<div style={{
-  width: "50vw",
-  height: "100vh",
-  position: "relative",
-  overflow: "hidden",
-  borderRadius: "16px",
-  backgroundColor: "#f2f2f2",
-  boxShadow: "0 0 8px rgba(0, 0, 0, 0.1)"
- 
-}}>
-      <Map isLoaded={isLoaded} />
-
-</div>
-    
-    </div>
+    <Container>
+      <FlexItem flex="0.3">
+        <Form isVisible={isVisible} onToggle={setIsVisible} />
+      </FlexItem>
+      <FlexItem flex="0.7">
+        <Map onOpen={onOpen} />
+      </FlexItem>
+    </Container>
   );
 }
 
