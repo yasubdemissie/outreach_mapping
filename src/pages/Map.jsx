@@ -1,44 +1,64 @@
-import { GoogleMap, LoadScript, useJsApiLoader } from "@react-google-maps/api";
-import Perfect from "../Perfect/Perfect";
-import { useEffect, useState } from "react";
-import propType from "prop-types";
+import React, { useState } from "react";
+import { MapContainer, TileLayer, Marker, useMapEvents, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import styled from "styled-components";
 
-const containerStyle = {
-  width: "100%",
-  height: "400px",
-};
+const PageContainer = styled.div`
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+`;
+
+const MapContainerStyled = styled.div`
+  grid-column: span 3;
+  width: 100%;
+  height: 100%;
+  position: relative;
+`;
 
 const center = {
   lat: -3.745,
   lng: -38.523,
 };
 
-const apiKey = "AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM";
+function Map({ onOpen }) {
+  const [markers, setMarkers] = useState([]);
 
-function Map({ isloaded }) {
+  const MapClickHandler = () => {
+    useMapEvents({
+      click(event) {
+        const { lat, lng } = event.latlng;
+        console.log(`Latitude: ${lat}, Longitude: ${lng}`);
+        setMarkers([...markers, { lat, lng }]);
+        onOpen();
+      },
+    });
+    return null;
+  };
 
-  // if (isloaded) return 
   return (
-    <div className="fixed w-dvw h-dvh">
-      {isloaded ? (
-        <Perfect />
-      ) : (
-        <LoadScript googleMapsApiKey={apiKey}>
-          <GoogleMap
-            mapContainerStyle={containerStyle}
-            center={center}
-            zoom={10}
-          >
-            {/* Child components, such as markers, info windows, etc. */}
-          </GoogleMap>
-        </LoadScript>
-      )}
-    </div>
+    <PageContainer>
+      <MapContainerStyled>
+        <MapContainer
+          center={[center.lat, center.lng]}
+          zoom={13}
+          scrollWheelZoom={true}
+          style={{ width: "100%", height: "100%" }}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {markers.map((marker, index) => (
+            <Marker key={index} position={[marker.lat, marker.lng]} >
+              <Popup>duthcj</Popup>
+            </Marker>
+          ))}
+          <MapClickHandler />
+        </MapContainer>
+      </MapContainerStyled>
+    </PageContainer>
   );
 }
-
-Map.propTypes = {
-  isloaded: propType.bool.isRequired,
-};
 
 export default Map;

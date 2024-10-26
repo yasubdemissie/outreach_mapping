@@ -1,9 +1,13 @@
+import Card from "../components/Card";
+
 function About() {
-    return (
-        <div>
-            About
-        </div>
-    )
+  return (
+    <div>
+      <h1>About Us</h1>
+
+      <Card />
+    </div>
+  );
 }
 
-export default About
+export default About;
