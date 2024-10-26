@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import { GoogleMap, MarkerF, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, MarkerF, useJsApiLoader, InfoWindowF } from '@react-google-maps/api';
 
 const containerStyle = {
-  width: '400px',
-  height: '400px',
+  width: '100vw',
+  height: '100vh',
 };
 
 const center = {
@@ -17,18 +17,15 @@ function MyComponent() {
     googleMapsApiKey: 'AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM',
   });
 
-  const [map, setMap] = useState(null);
   const [markers, setMarkers] = useState([center,]); // Store all markers
-  const [selectedMarker, setSelectedMarker] = useState(null); // For the InfoWindow
+  const [selectedPosition, setSelectedPosition] = useState(null);
 
   const onLoad = useCallback((map) => {
     const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
-    setMap(map);
   }, []);
 
   const onUnmount = useCallback(() => {
-    setMap(null);
   }, []);
 
   // Capture map clicks and add a new marker
@@ -39,68 +36,61 @@ function MyComponent() {
     };
     setMarkers((current) => [...current, newMarker]); // Add new marker to markers array
   };
+
   const [infoWindowVisible, setInfoWindowVisible] = useState(false);
-const [selectedpossetion, selectedMarkerPosetion] =useState()
-  // Marker click handler for InfoWindow
+
   const handleMarkerClick = (marker) => {
-    setSelectedMarker(marker);
-  };
-  const handleMarkerClicks = (marker) => {
-    selectedMarkerPosetion(marker)
+    setSelectedPosition(marker);
     setInfoWindowVisible(true);
   };
 
-  const handleInfoWindowCloseClick = () => {
+  const handleInfoWindowClose = () => {
     setInfoWindowVisible(false);
+    setSelectedPosition(null);
   };
-console.log(selectedMarker)
-  return isLoaded ? (
-    <div>
 
-    <GoogleMap
-      id="google-map-script"
-      className="map w-full"
-      mapElement={null}
-      mapContainerStyle={containerStyle}
-      center={center}
-      zoom={10}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-      onClick={handleMapClick} // Capture clicks on the map
-      options={{
-        streetViewControl: false,
-        mapTypeControl: false,
+  return isLoaded ? (
+ 
+      <GoogleMap
+        id="google-map-script"
+        className="map"
+        mapElement={null}
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={10}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+        onClick={handleMapClick} // Capture clicks on the map
+        options={{
+          streetViewControl: false,
+          mapTypeControl: false,
            mapTypeId: 'satellite'
 
-      }}
-    >
-      {/* Render each marker */}
-      {markers.map((marker, index) => (
-        <MarkerF
-          key={index}
-          position={marker}
-          onClick={() => {handleMarkerClick(marker)}}
-        />
-        
-      ))}
+        }}
+      >
+        {/* Render each marker */}
+        {markers.map((marker, index) => (
+          <MarkerF
+            key={index}
+            position={marker}
+            onClick={() => handleMarkerClick(marker)}
+          />
+        ))}
 
-      {/* Display InfoWindow if a marker is selected */}
-      {selectedMarker && (
-        <InfoWindow
-          position={selectedMarker}
-          onCloseClick={() => setSelectedMarker(null)}
-        >
-          <div>
-            <h2>New Marker</h2>
-         
-            <p>Lat: {selectedMarker.lat}</p>
-            <p>Lng: {selectedMarker.lng}</p>
-          </div>
-        </InfoWindow>
-      )}
+        {infoWindowVisible && selectedPosition && (
+          <InfoWindowF
+            position={selectedPosition}
+            onCloseClick={handleInfoWindowClose}
+          >
+            <div>
+              <h2>New Marker</h2>
+              <p>Lat: {selectedPosition.lat}</p>
+              <p>Lng: {selectedPosition.lng}</p>
+            </div>
+          </InfoWindowF>
+        )}
+      </GoogleMap>
     
-    </GoogleMap>
-    </div>
   ) : (
     <></>
   );
