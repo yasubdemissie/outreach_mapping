@@ -1,6 +1,7 @@
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import Perfect from "../Perfect/Perfect";
 import { useEffect, useState } from "react";
+import propType from "prop-types";
 
 const containerStyle = {
   width: "100%",
@@ -15,24 +16,11 @@ const center = {
 const apiKey = "AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM";
 
 function Map({ isloaded }) {
-  const [loadings, setLoading] = useState(isloaded);
-  useEffect(() => {
-    console.log("isLoaded", loadings);
 
-    if (loadings) {
-      setLoading(true);
-    }
-  }, [loadings]);
-
+  // if (isloaded) return 
   return (
-    <div
-      className="bg-red-500"
-      style={{
-        backgroundColor: "red",
-        width: "100%",
-      }}
-    >
-      {loadings ? (
+    <div className="fixed w-dvw h-dvh">
+      {isloaded ? (
         <Perfect />
       ) : (
         <LoadScript googleMapsApiKey={apiKey}>
@@ -48,5 +36,9 @@ function Map({ isloaded }) {
     </div>
   );
 }
+
+Map.propTypes = {
+  isloaded: propType.bool.isRequired,
+};
 
 export default Map;

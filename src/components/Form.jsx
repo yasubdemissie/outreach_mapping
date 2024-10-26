@@ -22,7 +22,7 @@ function Form() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="bg-yellow-300 absolute left-0 top-0 bottom-0 h-dvh">
       <div>
         <label htmlFor="firstName">First Name</label>
         <input
