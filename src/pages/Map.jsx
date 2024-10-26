@@ -1,13 +1,9 @@
-import { GoogleMap, LoadScript } from "@react-google-maps/api";
-import Perfect from "../Perfect/Perfect";
-import GoogleMapReact from 'google-map-react';
-
-import propType from "prop-types";
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+import React, { useState, useCallback } from 'react';
+import { GoogleMap, MarkerF, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
 
 const containerStyle = {
-  width: "100%",
-  height: "400px",
+  width: '400px',
+  height: '400px',
 };
 
 const center = {
@@ -15,44 +11,109 @@ const center = {
   lng: -38.523,
 };
 
-const apiKey = "AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM";
+function MyComponent() {
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: 'AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM',
+  });
 
-function Map({ isloaded }) {
-  const defaultProps = {
-    center: {
-      lat: 9.0079232,
-      lng: 38.8169728
-    },
-    zoom: 11
+  const [map, setMap] = useState(null);
+  const [markers, setMarkers] = useState([center,]); // Store all markers
+  const [selectedMarker, setSelectedMarker] = useState(null); // For the InfoWindow
+
+  const onLoad = useCallback((map) => {
+    const bounds = new window.google.maps.LatLngBounds(center);
+    map.fitBounds(bounds);
+    setMap(map);
+  }, []);
+
+  const onUnmount = useCallback(() => {
+    setMap(null);
+  }, []);
+
+  // Capture map clicks and add a new marker
+  const handleMapClick = (event) => {
+    const newMarker = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    };
+    setMarkers((current) => [...current, newMarker]); // Add new marker to markers array
+  };
+  const [infoWindowVisible, setInfoWindowVisible] = useState(false);
+const [selectedpossetion, selectedMarkerPosetion] =useState()
+  // Marker click handler for InfoWindow
+  const handleMarkerClick = (marker) => {
+    setSelectedMarker(marker);
+  };
+  const handleMarkerClicks = (marker) => {
+    selectedMarkerPosetion(marker)
+    setInfoWindowVisible(true);
   };
 
-  // if (isloaded) return 
-  return (
-    <div className="fixed w-dvw h-dvh">
-      {isloaded}
-      {isloaded ? (
-        <Perfect />
-      ) : (
-        <div style={{ height: '100vh', width: '100%' }}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: apiKey}}
-          defaultCenter={defaultProps.center}
-          defaultZoom={defaultProps.zoom}
+  const handleInfoWindowCloseClick = () => {
+    setInfoWindowVisible(false);
+  };
+console.log(markers)
+  return isLoaded ? (
+    <div>
+
+    <GoogleMap
+      id="google-map-script"
+      className="map w-full"
+      mapElement={null}
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={10}
+      onLoad={onLoad}
+      onUnmount={onUnmount}
+      onClick={handleMapClick} // Capture clicks on the map
+      options={{
+        streetViewControl: false,
+        mapTypeControl: false,
+           mapTypeId: 'satellite'
+
+      }}
+    >
+      {/* Render each marker */}
+      {markers.map((marker, index) => (
+        <MarkerF
+          key={index}
+          position={marker}
+          onClick={() => {handleMarkerClick(selectedMarker),handleMarkerClicks(marker)}}
         >
-          <AnyReactComponent
-            lat={59.955413}
-            lng={30.337844}
-            text="My Marker"
-          />
-        </GoogleMapReact>
-      </div>
+          misu
+        </MarkerF>
+      ))}
+
+      {/* Display InfoWindow if a marker is selected */}
+      {selectedMarker && (
+        <InfoWindow
+          position={selectedMarker}
+          onCloseClick={() => setSelectedMarker(null)}
+        >
+          <div>
+            <h2>New Marker</h2>
+         
+            <p>Lat: {selectedMarker.lat}</p>
+            <p>Lng: {selectedMarker.lng}</p>
+          </div>
+        </InfoWindow>
       )}
+      {infoWindowVisible && (
+        <InfoWindow position={selectedpossetion} onCloseClick={handleInfoWindowCloseClick}>
+          <div style={{ maxWidth: '200px' }}>
+            {selectedpossetion.lat }{ selectedpossetion.lng}
+            <h2>Location Name</h2>
+            
+            <p>This is a description of the location. Add any text or information you want here. </p>
+          </div>
+        </InfoWindow>
+      )}
+    </GoogleMap>
     </div>
+  ) : (
+    <></>
   );
 }
 
-Map.propTypes = {
-  isloaded: propType.bool.isRequired,
-};
-
-export default Map;
+export default React.memo(MyComponent);

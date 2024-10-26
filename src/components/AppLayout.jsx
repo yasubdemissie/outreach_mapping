@@ -15,7 +15,10 @@ function AppLayout() {
   return (
     <>
       <Form />
+      <div className="w-full h-full">
+
       <Map isLoaded={isLoaded} />
+      </div>
     </>
   );
 }
