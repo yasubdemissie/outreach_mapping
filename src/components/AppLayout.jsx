@@ -8,10 +8,13 @@ function AppLayout() {
   const [selectedPosition, setSelectedPosition ] = useState(null);
 
   return (
-    <div className="flex-container max-h-dvh">
-      <Form position={selectedPosition} />
-      <MapComponent setPosition={setSelectedPosition} />
-    </div>
+    <div className="flex-container mt-[80px]">
+      <div className="w-[600px]">
+
+      <FormComponent />
+      </div>
+      <MapComponent />
+      </div>
   );
 }
 

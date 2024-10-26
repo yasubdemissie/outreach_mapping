@@ -1,34 +1,98 @@
-import { useCallback, useState } from "react";
-import {
-  GoogleMap,
-  InfoWindowF,
-  MarkerF,
-  useJsApiLoader,
-} from "@react-google-maps/api";
-import { getCurrentLocation } from "../Perfect/apiGeocoding";
-import { useGetData } from "../hooks/useGetData";
+import  { useCallback, useState } from 'react';
+import { GoogleMap, InfoWindowF, MarkerF, useJsApiLoader } from '@react-google-maps/api';
+import RecipeReviewCard from './RecipeReviewCard';
 
 const containerStyle = {
   width: "70vw",
   height: "100vh",
 };
 
-const pos = getCurrentLocation();
-
-const center =
-  pos !== undefined
-    ? { lat: pos.latitude, lng: pos.longitude }
-    : {
-        lat: -3.745,
-        lng: -38.523,
-      };
-
-function MapComponent({ setPosition }) {
+const center = {
+    lat: -3.745,
+    lng: -38.523,
+  };
+  
+function MapComponent() {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM", // Replace with your API key
   });
-  const [markers, setMarkers] = useState([center]); // Store all markers
+  const [markers, setMarkers] = useState([center]);
+   // Store all markers
+   const apifeatch=[
+    {
+      "location": {
+        "type": "Point",
+        "coordinates": [
+           -3.745,
+            -38.523
+        ]
+      },
+      "_id": "671c9bd152ade19a5a50ed70",
+      "name": "someone",
+      "evangelismMethod": "oneToOneOutreach",
+      "numOfPeopleReached": 20,
+      "numOfPeopleSaved": 10,
+      "numOfPeopleRepent": 2,
+      "area": 20,
+      "date": "Sep 20, 2024",
+      "description": ` Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
+            medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
+            occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
+            large plate and set aside, leaving chicken and chorizo in the pan. Add
+            pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
+            stirring often until thickened and fragrant, about 10 minutes. Add
+            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.`,
+      "image": 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg',
+      "createdAt": "2024-10-26T07:35:45.071Z",
+      "updatedAt": "2024-10-26T07:35:45.071Z",
+      "__v": 0
+    },
+    {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            9.0058687,
+            38.8072656
+          ]
+        },
+        "_id": "671c9bd152ade19a5a50ed70",
+        "name": "someone",
+        "evangelismMethod": "oneToOneOutreach",
+        "numOfPeopleReached": 20,
+        "numOfPeopleSaved": 10,
+        "numOfPeopleRepent": 2,
+        "area": 20,
+        "date": "Sep 20, 2024",
+        "description": "This is the description",
+        "image": null,
+        "createdAt": "2024-10-26T07:35:45.071Z",
+        "updatedAt": "2024-10-26T07:35:45.071Z",
+        "__v": 0
+      },
+      {
+        "location": {
+          "type": "Point",
+          "coordinates": [
+            5.0058687,
+            48.8072656
+          ]
+        },
+        "_id": "671c9bd152ade19a5a50ed70",
+        "name": "someone",
+        "evangelismMethod": "oneToOneOutreach",
+        "numOfPeopleReached": 20,
+        "numOfPeopleSaved": 10,
+        "numOfPeopleRepent": 2,
+        "area": 20,
+        "date": "Sep 20, 2024",
+        "description": "This is the description",
+        "image": null,
+        "createdAt": "2024-10-26T07:35:45.071Z",
+        "updatedAt": "2024-10-26T07:35:45.071Z",
+        "__v": 0
+      }
+  ]
   const [selectedPosition, setSelectedPosition] = useState(null);
 
   const onLoad = useCallback((map) => {
@@ -62,43 +126,62 @@ function MapComponent({ setPosition }) {
     setInfoWindowVisible(false);
     setSelectedPosition(null);
   };
+  console.log(markers)
   return isLoaded ? (
+    <>
     <GoogleMap
       id="google-map"
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={16}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-      onClick={handleMapClick} // Capture clicks on the map
-      options={{
-        streetViewControl: false,
-        mapTypeControl: false,
-        mapTypeId: "satellite",
-      }}
-    >
-      {/* Render each marker */}
-      {markers.map((marker, index) => (
-        <MarkerF
-          key={index}
-          position={marker}
-          onClick={() => handleMarkerClick(marker)}
-        />
-      ))}
+   
+   
+    zoom={10}
+    onLoad={onLoad}
+    onUnmount={onUnmount}
+    onClick={handleMapClick} // Capture clicks on the map
+    options={{
+      streetViewControl: false,
+      mapTypeControl: false,
+       mapTypeId: 'satellite'
 
-      {infoWindowVisible && selectedPosition && (
-        <InfoWindowF
-          position={selectedPosition}
-          onCloseClick={handleInfoWindowClose}
-        >
-          <div>
-            <h2>New Marker</h2>
-            <p>Lat: {selectedPosition.lat}</p>
-            <p>Lng: {selectedPosition.lng}</p>
-          </div>
-        </InfoWindowF>
-      )}
-    </GoogleMap>
+    }}
+  >
+    {/* Render each marker */}
+    {markers.map((marker, index) => (
+      <MarkerF
+        key={index}
+        position={marker}
+        onClick={() => handleMarkerClick(marker)}
+      />
+    ))}
+    {/* Render center marker */}
+    {apifeatch.map((pinmarker, index) => (
+        
+    <MarkerF
+      key={index}
+      position={{
+        lat: parseFloat(pinmarker.location.coordinates[0]),
+        lng: parseFloat(pinmarker.location.coordinates[1])
+      }}
+      onClick={() => handleMarkerClick(pinmarker)}
+    />
+   ) )}
+
+    {infoWindowVisible && selectedPosition && (
+      
+      <InfoWindowF
+        position={{ lat: selectedPosition.location.coordinates[0], lng: selectedPosition.location.coordinates[1] }}
+        onCloseClick={handleInfoWindowClose}
+      >
+        <div>
+
+    <RecipeReviewCard data={selectedPosition}/>
+    </div>
+      </InfoWindowF>
+    )}
+  </GoogleMap>
+    </>
+
   ) : (
     <></>
   );
