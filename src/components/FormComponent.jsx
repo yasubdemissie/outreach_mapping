@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function FormComponent() {
   const [formData, setFormData] = useState({ name: '', email: '' });
@@ -14,7 +14,7 @@ function FormComponent() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form   onSubmit={handleSubmit}>
       <input
         type="text"
         name="name"

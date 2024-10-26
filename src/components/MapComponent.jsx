@@ -2,7 +2,7 @@ import  { useCallback, useState } from 'react';
 import { GoogleMap, InfoWindowF, MarkerF, useJsApiLoader } from '@react-google-maps/api';
 
 const containerStyle = {
-  width: '100vw',
+  width: '70vw',
   height: '100vh',
 };
 

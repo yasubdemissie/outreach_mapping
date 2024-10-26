@@ -8,7 +8,10 @@ function AppLayout() {
   
   return (
     <div className="flex-container">
+      <div className="w-[600px]">
+
       <FormComponent />
+      </div>
       <MapComponent />
       </div>
   );
