@@ -1,8 +1,8 @@
 
-import Map from "./pages/Map";
-import Form from "./Form";
-import { useJsApiLoader } from "@react-google-maps/api";
 
+import { useJsApiLoader } from "@react-google-maps/api";
+import Map from "../pages/Map";
+import Form from "../pages/Form";
 
 
 function AppLayout() {
