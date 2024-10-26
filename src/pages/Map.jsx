@@ -20,6 +20,7 @@ function Map({ isloaded }) {
   // if (isloaded) return 
   return (
     <div className="fixed w-dvw h-dvh">
+      {isloaded}
       {isloaded ? (
         <Perfect />
       ) : (

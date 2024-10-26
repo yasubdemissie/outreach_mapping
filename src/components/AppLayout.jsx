@@ -2,7 +2,7 @@
 
 import { useJsApiLoader } from "@react-google-maps/api";
 import Map from "../pages/Map";
-import Form from "../pages/Form";
+import Form from "./Form";
 
 
 function AppLayout() {
