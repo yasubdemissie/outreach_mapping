@@ -19,7 +19,6 @@ function AppLayout() {
   function onOpen() {
     setIsVisible(true);
   }
-
   return (
     <Container>
       <FlexItem flex="0.3">
