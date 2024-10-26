@@ -5,10 +5,12 @@ import Login from "./pages/Login";
 import Contact from "./pages/Contact";
 import AppLayout from "./components/AppLayout";
 import './App.css'; // Ensure to create this CSS file for styling
+import ResponsiveAppBar from "./components/AppBar";
 
 function App() {
   return (
     <BrowserRouter>
+  <ResponsiveAppBar/>
       <Routes>
         <Route index path="/home" element={<Home />} />
         <Route path="/about" element={<About />} />

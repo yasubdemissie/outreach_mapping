@@ -14,6 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import MediaControlCard from './Card';
 
 const ExpandMore = styled((props) => {
   // Remove expand from destructuring since it's not used
@@ -48,7 +49,7 @@ export default function RecipeReviewCard(data) {
   };
 
   return (
-    <Card sx={{ maxWidth: 1000 }}>
+    <Card sx={{ maxWidth: 600 }}>
       <CardHeader
         avatar={
           <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -104,10 +105,12 @@ export default function RecipeReviewCard(data) {
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
-        
-          <Typography sx={{ marginBottom: 2 }}>
-           
-            {data.data.description}
+        <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
+      <MediaControlCard data={data.data}/>
+      </div>
+          <Typography className='text-sm' sx={{ marginBottom: 2 }}>
+           <p>   {data.data.description}</p>
+          
           </Typography>
          
         
