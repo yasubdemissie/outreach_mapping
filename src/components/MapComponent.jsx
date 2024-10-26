@@ -63,7 +63,7 @@ function MapComponent({ setPosition }) {
       id="google-map"
       mapContainerStyle={containerStyle}
       center={center}
-      zoom={10}
+      zoom={17}
       onLoad={onLoad}
       onUnmount={onUnmount}
       onClick={handleMapClick} // Capture clicks on the map
