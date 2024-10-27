@@ -36,10 +36,10 @@ function ResponsiveAppBar() {
   };
 
   return (
-    <AppBar >
+    <AppBar>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 0}} />
+          <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -154,6 +154,7 @@ function ResponsiveAppBar() {
         </Toolbar>
       </Container>
     </AppBar>
+   
   );
 }
 export default ResponsiveAppBar;

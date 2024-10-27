@@ -1,7 +1,11 @@
-import  { useCallback, useState, useEffect } from 'react';
-import { Circle, CircleF, GoogleMap, InfoWindowF, MarkerF, useJsApiLoader } from '@react-google-maps/api';
-import RecipeReviewCard from './RecipeReviewCard';
-import axios from 'axios'; // Import Axios
+import { useCallback, useState } from "react";
+import {
+  GoogleMap,
+  InfoWindowF,
+  MarkerF,
+  useJsApiLoader,
+} from "@react-google-maps/api";
+import RecipeReviewCard from "./RecipeReviewCard";
 
 const containerStyle = {
   width: "70vw",
@@ -9,19 +13,84 @@ const containerStyle = {
 };
 
 const center = {
-    lat: 9.225492,
-    lng: 38.6663487,
-  };
-  
-function MapComponent() {
+  lat: -3.745,
+  lng: -38.523,
+};
+
+function MapComponent({ setPosition }) {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM", // Replace with your API key
   });
   const [markers, setMarkers] = useState([center]);
-   // Store all markers
-   const [apifeatch, setApifeatch] = useState([]);
-   const [selectedPosition, setSelectedPosition] = useState(null);
+  // Store all markers
+  const apifeatch = [
+    {
+      location: {
+        type: "Point",
+        coordinates: [-3.745, -38.523],
+      },
+      _id: "671c9bd152ade19a5a50ed70",
+      name: "someone",
+      evangelismMethod: "oneToOneOutreach",
+      numOfPeopleReached: 20,
+      numOfPeopleSaved: 10,
+      numOfPeopleRepent: 2,
+      area: 20,
+      date: "Sep 20, 2024",
+      description: ` Heat oil in a (14- to 16-inch) paella pan or a large, deep skillet over
+            medium-high heat. Add chicken, shrimp and chorizo, and cook, stirring
+            occasionally until lightly browned, 6 to 8 minutes. Transfer shrimp to a
+            large plate and set aside, leaving chicken and chorizo in the pan. Add
+            pimentón, bay leaves, garlic, tomatoes, onion, salt and pepper, and cook,
+            stirring often until thickened and fragrant, about 10 minutes. Add
+            saffron broth and remaining 4 1/2 cups chicken broth; bring to a boil.`,
+      image:
+        "https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg",
+      createdAt: "2024-10-26T07:35:45.071Z",
+      updatedAt: "2024-10-26T07:35:45.071Z",
+      __v: 0,
+    },
+    {
+      location: {
+        type: "Point",
+        coordinates: [9.0058687, 38.8072656],
+      },
+      _id: "671c9bd152ade19a5a50ed70",
+      name: "someone",
+      evangelismMethod: "oneToOneOutreach",
+      numOfPeopleReached: 20,
+      numOfPeopleSaved: 10,
+      numOfPeopleRepent: 2,
+      area: 20,
+      date: "Sep 20, 2024",
+      description: "This is the description",
+      image: null,
+      createdAt: "2024-10-26T07:35:45.071Z",
+      updatedAt: "2024-10-26T07:35:45.071Z",
+      __v: 0,
+    },
+    {
+      location: {
+        type: "Point",
+        coordinates: [5.0058687, 48.8072656],
+      },
+      _id: "671c9bd152ade19a5a50ed70",
+      name: "someone",
+      evangelismMethod: "oneToOneOutreach",
+      numOfPeopleReached: 20,
+      numOfPeopleSaved: 10,
+      numOfPeopleRepent: 2,
+      area: 20,
+      date: "Sep 20, 2024",
+      description: "This is the description",
+      image: null,
+      createdAt: "2024-10-26T07:35:45.071Z",
+      updatedAt: "2024-10-26T07:35:45.071Z",
+      __v: 0,
+    },
+  ];
+  const [selectedPosition, setSelectedPosition] = useState(null);
 
   const onLoad = useCallback((map) => {
     const bounds = new window.google.maps.LatLngBounds(center);
@@ -30,7 +99,7 @@ function MapComponent() {
 
   const onUnmount = useCallback(() => {}, []);
 
-  const { data, isLoading } = useGetData();
+  // const { data, isLoading } = useGetData();
 
   // console.log(data, isLoading);
 
@@ -49,90 +118,64 @@ function MapComponent() {
     setSelectedPosition(marker);
     setInfoWindowVisible(true);
   };
+  
 
   const handleInfoWindowClose = () => {
     setInfoWindowVisible(false);
     setSelectedPosition(null);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://outreach-mapping.onrender.com/form/getReachedPeoples');
-        setApifeatch(response.data); // Update apifeatch with fetched data
-        console.log(response.data); // Log fetched data for testing purposes
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData(); // Call the fetch function
-  }, [isLoaded]);
-
-  console.log(apifeatch)
-
+  console.log(markers);
   return isLoaded ? (
     <>
-    <GoogleMap
-      id="google-map"
-      mapContainerStyle={containerStyle}
-      center={center}
-   
-   
-    zoom={10}
-    onLoad={onLoad}
-    onUnmount={onUnmount}
-    onClick={handleMapClick} // Capture clicks on the map
-    options={{
-      streetViewControl: false,
-      mapTypeControl: false,
-       mapTypeId: 'satellite'
-
-    }}
-  >
-    {/* Render each marker */}
-    {markers.map((marker, index) => (
-     
-        <MarkerF
-        key={index}
-        position={marker}
-        onClick={() => handleMarkerClick(marker)}
-        
-      />
-   
-     
-    ))}
-    
-    {/* Render center marker */}
-    {apifeatch.map((pinmarker, index) => (
-        
-    <MarkerF
-      key={index}
-      position={{
-        lat: parseFloat(pinmarker.location.coordinates[0]),
-        lng: parseFloat(pinmarker.location.coordinates[1])
-      }}
-      onClick={() => handleMarkerClick(pinmarker)}
-    />
-    
-   
-   ) )}
-
-    {infoWindowVisible && selectedPosition && (
-      
-      <InfoWindowF
-        position={{ lat: selectedPosition.location.coordinates[0], lng: selectedPosition.location.coordinates[1] }}
-        onCloseClick={handleInfoWindowClose}
+      <GoogleMap
+        id="google-map"
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={10}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+        onClick={handleMapClick} // Capture clicks on the map
+        options={{
+          streetViewControl: false,
+          mapTypeControl: false,
+          mapTypeId: "satellite",
+        }}
       >
-        <div>
+        {/* Render each marker */}
+        {markers.map((marker, index) => (
+          <MarkerF
+            key={index}
+            position={marker}
+            onClick={() => handleMarkerClick(marker)}
+          />
+        ))}
+        {/* Render center marker */}
+        {apifeatch.map((pinmarker, index) => (
+          <MarkerF
+            key={index}
+            position={{
+              lat: parseFloat(pinmarker.location.coordinates[0]),
+              lng: parseFloat(pinmarker.location.coordinates[1]),
+            }}
+            onClick={() => handleMarkerClick(pinmarker)}
+          />
+        ))}
 
-    <RecipeReviewCard data={selectedPosition}/>
-    </div>
-      </InfoWindowF>
-    )}
-  </GoogleMap>
+        {infoWindowVisible && selectedPosition && (
+          <InfoWindowF
+            position={{
+              lat: selectedPosition.location.coordinates[0],
+              lng: selectedPosition.location.coordinates[1],
+            }}
+            onCloseClick={handleInfoWindowClose}
+          >
+            <div>
+              <RecipeReviewCard data={selectedPosition} />
+            </div>
+          </InfoWindowF>
+        )}
+      </GoogleMap>
     </>
-
   ) : (
     <></>
   );
