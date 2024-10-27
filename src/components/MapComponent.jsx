@@ -4,8 +4,8 @@ import RecipeReviewCard from './RecipeReviewCard';
 import axios from 'axios'; // Import Axios
 
 const containerStyle = {
-  width: '70vw',
-  height: '100vh',
+  width: "70vw",
+  height: "100vh",
 };
 
 const center = {
@@ -15,8 +15,8 @@ const center = {
   
 function MapComponent() {
   const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: 'AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM', // Replace with your API key
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyCtIGX5DjROORcpJAo8fNh2TD7S67FcVvM", // Replace with your API key
   });
   const [markers, setMarkers] = useState([center]);
    // Store all markers
@@ -28,16 +28,21 @@ function MapComponent() {
     map.fitBounds(bounds);
   }, []);
 
-  const onUnmount = useCallback(() => {
-  }, []);
+  const onUnmount = useCallback(() => {}, []);
+
+  const { data, isLoading } = useGetData();
+
+  // console.log(data, isLoading);
 
   const handleMapClick = (event) => {
-  const newMarker = {
-    lat: event.latLng.lat(),
-    lng: event.latLng.lng(),
+    const newMarker = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    };
+
+    setPosition(newMarker);
+    setMarkers((current) => [...current, newMarker]); // Add new marker to markers array
   };
-  setMarkers((current) => [...current, newMarker]); // Add new marker to markers array
-};
   const [infoWindowVisible, setInfoWindowVisible] = useState(false);
 
   const handleMarkerClick = (marker) => {
